@@ -18,7 +18,9 @@ jobs:
 
     - name: Install R packages
       run: |
-        R -e 'install.packages("tidyverse", repos = "https://cloud.r-project.org")'
+        R -e 'install.packages("readr", repos = "https://cloud.r-project.org")'
+        R -e 'install.packages("purrr", repos = "https://cloud.r-project.org")'
+        R -e 'install.packages("dplyr", repos = "https://cloud.r-project.org")'
         R -e 'install.packages("janitor", repos = "https://cloud.r-project.org")'
         R -e 'install.packages("nanoparquet", repos = "https://cloud.r-project.org")'
 
