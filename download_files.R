@@ -33,7 +33,7 @@ county_outflows_df <-
         mutate(y2_countyname = str_replace_all(y2_countyname, "Do??a Ana County", "Doña Ana County")) |>
         select(year, everything())) |>
   list_rbind() |>
-  clean_names() |> glimpse()
+  clean_names() |>
   write_parquet("clean_data/county_outflow_data.parquet")
 
 county_inflows_df <-
