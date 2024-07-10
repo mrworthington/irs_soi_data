@@ -14,7 +14,7 @@ state_outflows_df <-
         select(year, everything())) |>
   list_rbind() |>
   clean_names() |>
-  write_parquet("clean_data/state_outflow_data.parquet")
+  write_parquet("state_outflow_data.parquet")
 
 state_inflows_df <-
   map(years,
@@ -23,7 +23,7 @@ state_inflows_df <-
         select(year, everything())) |>
   list_rbind() |>
   clean_names() |>
-  write_parquet("clean_data/state_inflow_data.parquet")
+  write_parquet("state_inflow_data.parquet")
 
 county_outflows_df <-
   map(years,
@@ -34,7 +34,7 @@ county_outflows_df <-
         select(year, everything())) |>
   list_rbind() |>
   clean_names() |>
-  write_parquet("clean_data/county_outflow_data.parquet")
+  write_parquet("county_outflow_data.parquet")
 
 county_inflows_df <-
   map(years,
@@ -45,4 +45,4 @@ county_inflows_df <-
         select(year, everything())) |>
   list_rbind() |>
   clean_names() |>
-  write_parquet("clean_data/county_inflow_data.parquet")
+  write_parquet("county_inflow_data.parquet")
