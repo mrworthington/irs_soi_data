@@ -1,6 +1,7 @@
 library(readr)
 library(dplyr)
 library(purrr)
+library(stringr)
 library(janitor)
 library(nanoparquet)
 
@@ -29,9 +30,10 @@ county_outflows_df <-
       ~read_csv(paste0("https://www.irs.gov/pub/irs-soi/countyoutflow",.x,".csv")) |>
         mutate(year = .x,
                across(contains("fips"), ~as.character(.x))) |>
+        mutate(y2_countyname = str_replace_all(y2_countyname, "Do??a Ana County", "Doña Ana County")) |>
         select(year, everything())) |>
   list_rbind() |>
-  clean_names() |>
+  clean_names() |> glimpse()
   write_parquet("clean_data/county_outflow_data.parquet")
 
 county_inflows_df <-
@@ -39,6 +41,7 @@ county_inflows_df <-
       ~read_csv(paste0("https://www.irs.gov/pub/irs-soi/countyinflow",.x,".csv")) |>
         mutate(year = .x,
                across(contains("fips"), ~as.character(.x))) |>
+        mutate(y1_countyname = str_replace_all(y1_countyname, "Do??a Ana County", "Doña Ana County")) |>
         select(year, everything())) |>
   list_rbind() |>
   clean_names() |>
