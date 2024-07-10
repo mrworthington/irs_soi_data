@@ -7,7 +7,7 @@ library(nanoparquet)
 
 years <- c("2122","2021", "1920", "1819", "1718", "1617", "1516", "1415", "1314", "1213", "1112")
 
-state_outflows_df <-
+# state_outflows_df <-
   map(years,
       ~read_csv(paste0("https://www.irs.gov/pub/irs-soi/stateoutflow",.x,".csv")) |>
         mutate(year = .x) |>
@@ -16,7 +16,7 @@ state_outflows_df <-
   clean_names() |>
   write_parquet("clean_data/state_outflow_data.parquet")
 
-state_inflows_df <-
+# state_inflows_df <-
   map(years,
       ~read_csv(paste0("https://www.irs.gov/pub/irs-soi/stateinflow",.x,".csv")) |>
         mutate(year = .x) |>
@@ -25,7 +25,7 @@ state_inflows_df <-
   clean_names() |>
   write_parquet("clean_data/state_inflow_data.parquet")
 
-county_outflows_df <-
+# county_outflows_df <-
   map(years,
       ~read_csv(paste0("https://www.irs.gov/pub/irs-soi/countyoutflow",.x,".csv")) |>
         mutate(year = .x,
@@ -36,7 +36,7 @@ county_outflows_df <-
   clean_names() |>
   write_parquet("clean_data/county_outflow_data.parquet")
 
-county_inflows_df <-
+# county_inflows_df <-
   map(years,
       ~read_csv(paste0("https://www.irs.gov/pub/irs-soi/countyinflow",.x,".csv")) |>
         mutate(year = .x,
