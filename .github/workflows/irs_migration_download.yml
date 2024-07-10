@@ -18,7 +18,7 @@ jobs:
 
     - name: Install R packages
       run: |
-        install.packages(c("tidyverse", "janitor", "nanoparquet"), repos = "https://cloud.r-project.org")
+        install.packages(c("tidyverse", "janitor", "arrow"), repos = "https://cloud.r-project.org")
         # Add any other packages your script needs here
 
     - name: Run download script
