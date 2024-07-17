@@ -36,6 +36,12 @@ jobs:
           -v ${{ github.workspace }}:/app \
           ${{ secrets.DOCKER_USERNAME }}/irs-migration-data:latest
 
+    - name: Configure Git for GitHub Actions
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+
     - name: Commit and push changes
       run: |
         git config --global user.name 'github-actions[bot]'
