@@ -33,7 +33,7 @@ jobs:
         docker run --rm \
           -e GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
           -v ${{ github.workspace }}:/app \
-          your-docker-username/irs-migration-data:latest
+          ${{ secrets.DOCKER_USERNAME }}/irs-migration-data:latest
 
     - name: Commit and push changes
       run: |
