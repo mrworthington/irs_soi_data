@@ -9,38 +9,37 @@ jobs:
   download_and_process:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write  # Ensure the GITHUB_TOKEN has write permissions
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-
-    - name: Cache R packages
-      uses: actions/cache@v2
       with:
-        path: ${{ runner.cacheDir }}/R
-        key: ${{ runner.os }}-R-${{ hashFiles('**/*.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-R-
+        persist-credentials: false  # Ensures we don't persist the token to the filesystem
+        fetch-depth: 0  # Ensures that we fetch all history so we can push our changes
 
-    - name: Set up R
-      uses: r-lib/actions/setup-r@v2
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
 
-    - name: Install R packages
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Run Docker container
       run: |
-        R -e 'install.packages("readr", repos = "https://cloud.r-project.org")'
-        R -e 'install.packages("purrr", repos = "https://cloud.r-project.org")'
-        R -e 'install.packages("dplyr", repos = "https://cloud.r-project.org")'
-        R -e 'install.packages("stringr", repos = "https://cloud.r-project.org")'
-        R -e 'install.packages("janitor", repos = "https://cloud.r-project.org")'
-        R -e 'install.packages("nanoparquet", repos = "https://cloud.r-project.org")'
-
-    - name: Run download script
-      run: Rscript download_files.R
+        docker run --rm \
+          -e GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
+          -v ${{ github.workspace }}:/app \
+          your-docker-username/irs-migration-data:latest
 
     - name: Commit and push changes
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add clean_data/*
+        git add migration_data/*
         git commit -m 'Update migration data'
         git push
       env:
