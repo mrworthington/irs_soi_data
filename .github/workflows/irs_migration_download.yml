@@ -31,6 +31,7 @@ jobs:
     - name: Run Docker container
       run: |
         docker run --rm \
+          --platform linux/amd64 \
           -e GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
           -v ${{ github.workspace }}:/app \
           ${{ secrets.DOCKER_USERNAME }}/irs-migration-data:latest
