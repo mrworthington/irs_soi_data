@@ -1,4 +1,4 @@
-# IRS SOI Data Retrieval with Docker + R
+# IRS SOI Data Retrieval with {pak} + R
 
 This is a repo that downloads and organizes population migration data from the IRS' Statistics of Income Population Migration data for consumption into a Quarto Dashboard
 
