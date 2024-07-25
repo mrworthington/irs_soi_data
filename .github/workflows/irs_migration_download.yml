@@ -5,10 +5,10 @@ on:
     - cron: '0 0 1 * *'  # Runs at midnight on the first day of every month
   workflow_dispatch:  # Allows for manual triggering of the workflow
 
-name: scrape_irs_soi_data
+name: scrape
 
 jobs:
-  scrape_irs_soi_data:
+  scrape:
     runs-on: ubuntu-latest
     permissions:
       contents: write
