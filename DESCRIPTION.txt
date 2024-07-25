@@ -1,0 +1,11 @@
+Package: irs-soi-data
+Title: Scraping IRS Statistics of Income Population Migration Data
+Version: 0.0.0.9000
+Imports:
+  readr,
+  dplyr,
+  purrr,
+  nanoparquet,
+  stringr,
+  janitor
+Remotes: r-lib/nanoparquet
