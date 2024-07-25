@@ -6,48 +6,22 @@ on:
   workflow_dispatch:  # Allows for manual triggering of the workflow
 
 jobs:
-  download_and_process:
+  scrape:
     runs-on: ubuntu-latest
-
     permissions:
-      contents: write  # Ensure the GITHUB_TOKEN has write permissions
-
+      contents: write
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+    - uses: r-lib/actions/setup-r@v2
       with:
-        persist-credentials: false  # Ensures we don't persist the token to the filesystem
-        fetch-depth: 0  # Ensures that we fetch all history so we can push our changes
+        use-public-rspm: true
+    - uses: r-lib/actions/setup-r-dependencies@v2
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+    - name: Fetch latest data
+      run: Rscript download_files.R
 
-    - name: Login to Docker Hub
-      uses: docker/login-action@v1
+    - uses: stefanzweifel/git-auto-commit-action@v5
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-
-    - name: Run Docker container
-      run: |
-        docker run --rm \
-          --platform linux/amd64 \
-          -e GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
-          -v ${{ github.workspace }}:/app \
-          ${{ secrets.DOCKER_USERNAME }}/irs-migration-data:latest
-
-    - name: Configure Git for GitHub Actions
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-
-    - name: Commit and push changes
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add clean_data/*
-        git commit -m 'Update migration data'
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        commit_message: By action https://github.com/${{ env.GITHUB_REPOSITORY }}/actions/runs/${{ env.GITHUB_RUN_ID }}
